@@ -5,3 +5,10 @@ Latex/*.synctex.gz
 Latex/*.bbl
 Latex/*-blx.bib
 Latex/*.pdf
+Latex/*.aux
+Latex/*.blg
+Latex/*.log
+Latex/*.out
+Latex/*.run.xml
+Latex/*.toc
+Mẫu bài báo.docx

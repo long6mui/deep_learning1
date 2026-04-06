@@ -20,8 +20,10 @@ TRAIN_PATH = DATASET_DIR / "train.pkl"
 TEST_PATH = DATASET_DIR / "test.pkl"
 TRAIN_PRED_PATH = OUTPUT_DIR / "train_oof_predictions.csv"
 TEST_PRED_PATH = OUTPUT_DIR / "test_predictions.csv"
+SUBMISSION_PATH = ROOT / "group18.csv"
 METRICS_PATH = OUTPUT_DIR / "training_metrics.json"
 MODEL_PATH = OUTPUT_DIR / "catboost_model.cbm"
+CSV_FLOAT_FORMAT = "%.4f"
 
 
 BASE_MODEL_PARAMS = {
@@ -218,8 +220,9 @@ def train_and_predict(
         }
     )
 
-    train_predictions.to_csv(TRAIN_PRED_PATH, index=False)
-    test_predictions.to_csv(TEST_PRED_PATH, index=False)
+    train_predictions.to_csv(TRAIN_PRED_PATH, index=False, float_format=CSV_FLOAT_FORMAT)
+    test_predictions.to_csv(TEST_PRED_PATH, index=False, float_format=CSV_FLOAT_FORMAT)
+    test_predictions.to_csv(SUBMISSION_PATH, index=False, float_format=CSV_FLOAT_FORMAT)
 
     metrics = {
         "oof_auc": round(oof_auc, 6),
@@ -230,6 +233,7 @@ def train_and_predict(
         "fold_metrics": fold_metrics,
         "train_output": str(TRAIN_PRED_PATH),
         "test_output": str(TEST_PRED_PATH),
+        "submission_output": str(SUBMISSION_PATH),
         "model_output": str(MODEL_PATH),
     }
 
