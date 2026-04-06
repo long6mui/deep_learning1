@@ -72,14 +72,10 @@
 \includegraphics[width=4cm]{logo-hust.png}\\[1.8cm]
 
 % Title
-{\fontsize{32pt}{1}\selectfont \textbf{REPORT}}\\[0.4cm]
-{\fontsize{20pt}{1}\selectfont Introduction to Machine Learning}\\[0.8cm]
-\fontsize{15pt}{1}\selectfont \textbf{LibRAG: }}\\[1.8cm]
-{\Large \textbf{}}\\[6pt]
-{\large \textbf{Supervisors:}  PGS. Phạm Văn Hải}\\
-{\textbf{Class: }}
-\vfill
-
+{\fontsize{32pt}{1}\selectfont \textbf{PROJECT REPORT}}\\[0.4cm]
+{\fontsize{20pt}{1}\selectfont DEEP LEARNING -- IT4653}\\[0.8cm]
+{\fontsize{18pt}{1}\selectfont \textbf{Project}\\
+\fontsize{15pt}{1}\selectfont \textbf{MovieRAG: Enhanced System with Movie Knowledge Graph}}\\[1.8cm]
 
 % Student info
 \begin{table}[h]
@@ -90,29 +86,32 @@
         \hline
         \textbf{STT} & \textbf{Họ và Tên} & \textbf{MSSV} & \textbf{Email} \\
         \hline
-        1 & Nguyễn Văn Hưởng  & 2023xxxx & huong.nv23xxxx@sis.hust.edu.vn \\
+        1 &  Nguyễn Quốc Bảo Long  & 20230045 & long.nqb230045@sis.hust.edu.vn \\
         \hline
-        2 & Trần Minh Khoa    & 2024002  & khoa.tm24002@sis.happroachust.edu.vn \\
+        2 & Nguyễn Đình Lâm Phúc   & 20235193  & phuc.ndl235193@sis.hust.edu.vn \\
         \hline
-        3 & Nguyễn Minh Khôi  & 2024003  & Khoi.NM235123@sis.hust.edu.vn \\
+        3 & Nguyễn Khánh Hưng  & 20235100  & hung.nk235100@sis.hust.edu.vn \\
         \hline
-        4 & Trần Tiến Dũng    & 2024004  & dung.tt24004@sis.hust.edu.vn \\
-        \hline
-        5 & Nguyễn Đình Hoàng & 2023xxx  & hoang.nd23xxx@sis.hust.edu.vn \\
+        4 & Trần Nguyên Thành    & 20235224  & thanh.tn235224@sis.hust.edu.vn \\
         \hline
     \end{tabularx}
 \end{table}
 % Supervisors
+{\Large \textbf{Supervisors}}\\[6pt]
+{\large \textbf{Assoc Prof. Nguyễn Hồng Quang}}\\
+{\textbf{Class: }}
+\vfill
+{\large Ha Noi, \number\year}
 
 \end{center}
 
 \setcounter{tocdepth}{1}
-% \newpage
+\newpage
 
-% \begin{abstract}
-% Large Language Models (LLMs) have demonstrated remarkable capabilities in natural language understanding; however, they remain prone to hallucinations and lack up-to-date knowledge in specialized domains. While Retrieval-Augmented Generation (RAG) \cite{lewis2020rag}  mitigates these issues by retrieving relevant context, traditional vector-based approaches often treat data snippets in isolation, failing to capture the complex structural dependencies essential for reasoning. This paper presents the design and implementation of a movie-domain chatbot leveraging GraphRAG (Retrieval-Augmented Generation with Graphs) to address these limitations. Unlike naive RAG systems, our approach models the underlying movie database as a Knowledge Graph (KG) \cite{han2025retrievalaugmentedgenerationgraphsgraphrag} , explicitly representing relationships between heterogeneous entities such as actors, directors, and genres. By integrating graph traversal algorithms with semantic retrieval, the system identifies and retrieves relevant subgraphs, providing the LLM with structured, topologically rich context for answer generation. Experimental evaluations demonstrate that the GraphRAG-based architecture \cite{han2025retrievalaugmentedgenerationgraphsgraphrag} significantly outperforms baseline methods in handling multi-hop queries and relational reasoning tasks. This study highlights the efficacy of combining symbolic graph structures with neural language models to build more robust and context-aware conversational agents.
+\begin{abstract}
+Large Language Models (LLMs) have demonstrated remarkable capabilities in natural language understanding; however, they remain prone to hallucinations and lack up-to-date knowledge in specialized domains. While Retrieval-Augmented Generation (RAG) \cite{lewis2020rag}  mitigates these issues by retrieving relevant context, traditional vector-based approaches often treat data snippets in isolation, failing to capture the complex structural dependencies essential for reasoning. This paper presents the design and implementation of a movie-domain chatbot leveraging GraphRAG (Retrieval-Augmented Generation with Graphs) to address these limitations. Unlike naive RAG systems, our approach models the underlying movie database as a Knowledge Graph (KG) \cite{han2025retrievalaugmentedgenerationgraphsgraphrag} , explicitly representing relationships between heterogeneous entities such as actors, directors, and genres. By integrating graph traversal algorithms with semantic retrieval, the system identifies and retrieves relevant subgraphs, providing the LLM with structured, topologically rich context for answer generation. Experimental evaluations demonstrate that the GraphRAG-based architecture \cite{han2025retrievalaugmentedgenerationgraphsgraphrag} significantly outperforms baseline methods in handling multi-hop queries and relational reasoning tasks. This study highlights the efficacy of combining symbolic graph structures with neural language models to build more robust and context-aware conversational agents.
     
-% \end{abstract}
+\end{abstract}
 \tableofcontents
 
 \newpage
@@ -120,9 +119,9 @@
 \chapter{Introduction}
 
 \section{Motivation}
-The unprecedented evolution of Large Language Models (LLMs) has fundamentally redefined the boundaries of Natural Language Processing. These models have become ubiquitous, endowing artificial agents with the capacity to comprehend and generate human-like text with remarkable fluency \cite{devlin-etal-2019-bert, touvron2023llama}. In the context of \textbf{Library and Information Science}, specifically bibliographic discovery and book recommendation, this advancement offers a significant opportunity to transform how patrons interact with \textbf{digital library catalogs}. Users no longer seek simple keyword-based results; they demand intelligent agents capable of understanding complex, context-rich queries such as tracing \textit{literary influences} or exploring thematic similarities across \textit{extensive book series}.
+The unprecedented evolution of Large Language Models (LLMs) has fundamentally redefined the boundaries of Natural Language Processing. These models have become ubiquitous, endowing artificial agents with the capacity to comprehend and generate human-like text with remarkable fluency \cite{devlin-etal-2019-bert, touvron2023llama}. In the context of the entertainment industry, specifically movie recommendation and discovery, this advancement offers a significant opportunity to transform how users interact with cinematic databases. Users no longer seek simple keyword-based results; they demand intelligent agents capable of understanding complex, context-rich queries such as identifying artistic collaborations or exploring thematic similarities across film franchises.
 
-However, the bibliographic domain is characterized by high \textit{relational density}. Entities such as \textbf{authors, editors, genres, and publishing houses} are not isolated data points but are inextricably linked through a complex web of intellectual and historical connections. To fully leverage the potential of LLMs in this domain, there is a critical need for a framework that can not only retrieve information but also comprehend the \textbf{topological structure} of these relationships. This necessitates a paradigm shift towards Retrieval-Augmented Generation with Graphs (GraphRAG) \cite{han2025retrievalaugmentedgenerationgraphsgraphrag}, which utilizes Knowledge Graphs to preserve the semantic context necessary for answering sophisticated bibliographic queries.
+However, the movie domain is characterized by high \textit{relational density}. Entities such as actors, directors, genres, and production studios are not isolated data points but are inextricably linked through a complex web of artistic and professional collaborations. To fully leverage the potential of LLMs in this domain, there is a critical need for a framework that can not only retrieve information but also comprehend the \textbf{topological structure} of these relationships. This necessitates a paradigm shift towards Retrieval-Augmented Generation with Graphs (GraphRAG)  \cite{han2025retrievalaugmentedgenerationgraphsgraphrag}, which utilizes Knowledge Graphs to preserve the semantic context necessary for answering sophisticated user queries.
 
 \section{Problem Statement}
 Despite their linguistic proficiency, deploying LLMs for specialized domain tasks presents significant challenges. The first intrinsic limitation is the phenomenon of hallucination \cite{maynez-etal-2020-faithfulness}, where the model generates plausible but factually incorrect assertions. Additionally, LLMs are constrained by their static training data, rendering them incapable of accessing real-time information or private knowledge bases developed after their training cutoff \cite{lewis2020rag}.
@@ -154,39 +153,39 @@ To achieve this main goal, the project focuses on the following specific objecti
     \item \textbf{Empirical Evaluation and Comparison:} 
     To evaluate the performance of the proposed GraphRAG framework against a baseline "Naive" RAG system (Vector-only). The evaluation will focus on key metrics such as answer faithfulness, relevance, and the ability to correctly handle multi-hop queries.
 \end{enumerate}
-% \section{Scope and Limitations}
+\section{Scope and Limitations}
 
-% \subsubsection{Scope of the Project}
-% This research focuses on the development of a backend-heavy retrieval system and a user-facing chatbot interface. The specific boundaries of the project are defined as follows:
+\subsubsection{Scope of the Project}
+This research focuses on the development of a backend-heavy retrieval system and a user-facing chatbot interface. The specific boundaries of the project are defined as follows:
 
-% \begin{itemize}
-%     \item[] \textbf{Data Coverage:} The system utilizes the \textbf{TMDB (The Movie Database)} Dataset, where information of thousands of movies will be collected via their API then will be preprocessed. This dataset provides a rich collection of metadata, including plot summaries, cast and crew information, budget, revenue, and user ratings, which is sufficient to construct a dense Knowledge Graph for experimental purposes.
+\begin{itemize}
+    \item[] \textbf{Data Coverage:} The system utilizes the \textbf{TMDB (The Movie Database)} Dataset, where information of thousands of movies will be collected via their API then will be preprocessed. This dataset provides a rich collection of metadata, including plot summaries, cast and crew information, budget, revenue, and user ratings, which is sufficient to construct a dense Knowledge Graph for experimental purposes.
     
-%     \item[] \textbf{Functional Scope:} The system supports two primary types of queries:
-%     \begin{itemize}
-%         \item[] \textit{Recommendation Queries:} "Suggest movies similar to Inception but with more horror elements."
-%         \item[] \textit{Fact-based/Relational Queries:} "Which director has collaborated the most with Leonardo DiCaprio?"
-%     \end{itemize}
+    \item[] \textbf{Functional Scope:} The system supports two primary types of queries:
+    \begin{itemize}
+        \item[] \textit{Recommendation Queries:} "Suggest movies similar to Inception but with more horror elements."
+        \item[] \textit{Fact-based/Relational Queries:} "Which director has collaborated the most with Leonardo DiCaprio?"
+    \end{itemize}
     
-%     \item[] \textbf{Technical Stack:} The implementation is strictly limited to the integration of \textbf{Google Gemini} (via API) for language processing, \textbf{Qdrant} for vector database and \textbf{Neo4j} for graph storage.
-% \end{itemize}
+    \item[] \textbf{Technical Stack:} The implementation is strictly limited to the integration of \textbf{Google Gemini} (via API) for language processing, \textbf{Qdrant} for vector database and \textbf{Neo4j} for graph storage.
+\end{itemize}
 
-% \subsubsection{Limitations}
-% Despite the advantages of the GraphRAG approach, this project acknowledges several limitations due to constraints in resources and time:
+\subsubsection{Limitations}
+Despite the advantages of the GraphRAG approach, this project acknowledges several limitations due to constraints in resources and time:
 
-% \begin{enumerate}
-%     \item \textbf{Linguistic Constraint:} The system is currently optimized for the \textbf{English language} only. While the underlying LLM (Gemini) supports multilingualism, the Entity Extraction and Graph Traversal pipelines are fine-tuned for English syntax. Queries in Vietnamese or other languages may result in suboptimal retrieval accuracy.
+\begin{enumerate}
+    \item \textbf{Linguistic Constraint:} The system is currently optimized for the \textbf{English language} only. While the underlying LLM (Gemini) supports multilingualism, the Entity Extraction and Graph Traversal pipelines are fine-tuned for English syntax. Queries in Vietnamese or other languages may result in suboptimal retrieval accuracy.
     
-%     \item \textbf{Static Knowledge Base:} The constructed Knowledge Graph represents a \textbf{static snapshot} of the movie industry at the time of data collection. The system does not currently possess a real-time crawling mechanism to update the database with newly released movies or recent box-office figures.
+    \item \textbf{Static Knowledge Base:} The constructed Knowledge Graph represents a \textbf{static snapshot} of the movie industry at the time of data collection. The system does not currently possess a real-time crawling mechanism to update the database with newly released movies or recent box-office figures.
 
-%     \item \textbf{Cost inefficiency:} The utility of graph techniques requires an extensive amount of resources (hardware requirements, energy, money, ...). In this we can not afford that so our product should only be considered as an MVP (Minimum Viable Product) with integration of free-tier external services. 
+    \item \textbf{Cost inefficiency:} The utility of graph techniques requires an extensive amount of resources (hardware requirements, energy, money, ...). In this we can not afford that so our product should only be considered as an MVP (Minimum Viable Product) with integration of free-tier external services. 
     
-%     \item \textbf{Latency and API Dependency:} As the system relies on external API calls to Google Gemini for both embedding and generation, response latency is subject to network stability and API rate limits. Therefore, the system is designed for proof-of-concept demonstrations rather than high-concurrency production environments.
+    \item \textbf{Latency and API Dependency:} As the system relies on external API calls to Google Gemini for both embedding and generation, response latency is subject to network stability and API rate limits. Therefore, the system is designed for proof-of-concept demonstrations rather than high-concurrency production environments.
 
     
-% \end{enumerate}
+\end{enumerate}
 
-\chapter{Background}
+\chapter{Background and Theoretical Framework}
 This chapter establishes the theoretical framework for the retrieval systems used in this research. We begin by defining the general Retrieval-Augmented Generation (RAG) paradigm. We then analyze the traditional Vector-based approach (Dense Retrieval) and its limitations regarding structural reasoning. Finally, we introduce Knowledge Graphs and the GraphRAG architecture as a solution for capturing complex relational dependencies.
 \section{Related Work}
 \label{sec:related_work}
@@ -395,10 +394,11 @@ The final component, the Generator ($\Omega_{Generator}$), synthesizes the answe
 \section{Knowledge Graph: Foundations and Mechanisms in GraphRAG}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{Graph.png}
-    \caption{Example Graph in Neo4j}
+    \includegraphics[width=\linewidth]{kg.png}
+    \caption{Example Knowledge Graph}
     \label{fig:graph}
 \end{figure}
+
 In the context of Graph Retrieval-Augmented Generation (GraphRAG), the Knowledge Graph (KG) serves as the structured cognitive backbone. Unlike unstructured vector databases, a KG explicitly models information as a network of entities connected by well-defined relationships. It can encompass general knowledge or specialized domains. The diverse topology of a KG, comprising entities, edges, paths, and subgraphs, provides a robust substrate for enhancing downstream tasks such as Question Answering (QA), Fact-Checking, and Complex Reasoning.
 
 This section provides a comprehensive review of the lifecycle of Knowledge Graphs within the RAG framework, ranging from their construction to the intricate mechanisms of retrieval and generation.
@@ -728,7 +728,7 @@ Where:
 \section{Quantitative Results}
 \label{sec:quant_results}
 
-\subsection{Overall Performance (Unweighted Analysis)}
+\subsection{Overall Performance}
 \label{sec:unweighted_results}
 
 To evaluate the system's general capabilities without domain-specific bias, we recalculated the performance using an unweighted macro-average across all five metrics.
@@ -749,14 +749,6 @@ Answer Correctness & \textbf{0.933} & 0.917 & +0.016 \\
 \end{tabular}
 \end{table}
 
-\subsubsection{Analysis of Unweighted Scores}
-Even under an unweighted evaluation schema, GraphRAG maintains its superiority over the baseline:
-
-\begin{itemize}
-    \item \textbf{Consistency:} The unweighted score for GraphRAG ($0.8116$) is statistically identical to the weighted score ($0.812$), indicating that the system's performance is balanced. It does not rely solely on heavily weighted metrics (like Faithfulness) to achieve a high overall score.
-    \item \textbf{Trade-off Impact:} The drops in \textit{Relevancy} and \textit{Precision} (totaling $-0.034$) are effectively offset by the substantial gains in \textit{Faithfulness} ($+0.122$) and \textit{Recall} ($+0.033$).
-    \item \textbf{Conclusion:} Whether prioritizing factual safety (Weighted) or general retrieval quality (Unweighted), GraphRAG consistently delivers a $\sim3.5\%$ performance improvement over standard vector-based RAG.
-\end{itemize}
 \subsection{Performance Analysis by Query Type}
 \label{sec:query_performance}
 
@@ -768,7 +760,7 @@ To understand the specific strengths and weaknesses of the proposed architecture
 \label{tab:query_type_performance}
 \begin{tabular}{lcccl}
 \toprule
-\textbf{Dataset} & \textbf{GraphRAG} & \textbf{SimpleRAG} & \textbf{$\Delta$} & \textbf{Winner} \\ \midrule
+\textbf{Test set} & \textbf{GraphRAG} & \textbf{SimpleRAG} & \textbf{$\Delta$} & \textbf{Winner} \\ \midrule
 Actor-based & 0.823 & 0.765 & +7.6\% & GraphRAG \\ 
 Director-based & 0.801 & 0.788 & +1.6\% & GraphRAG \\ 
 Genre Recommendation & 0.778 & 0.812 & -4.2\% & SimpleRAG \\ 
@@ -800,7 +792,7 @@ The results highlight a clear divergence in system capabilities based on the nat
 \end{itemize}
 
 \textbf{Key Insight:} GraphRAG does not demonstrate universal superiority. Instead, it offers \textbf{selective improvement} for complex, relationship-heavy queries. For simpler tasks involving direct semantic matching or metadata filtering, the standard vector-based approach remains highly effective and efficient.
-
+\newpage 
 \section{Ablation Study}
 \label{sec:ablation}
 To isolate the contribution of each system component, we conducted an ablation study by sequentially removing modules.

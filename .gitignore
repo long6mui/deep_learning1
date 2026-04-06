@@ -1,0 +1,7 @@
+Dataset/
+catboost_info/
+predictions/
+Latex/*.synctex.gz
+Latex/*.bbl
+Latex/*-blx.bib
+Latex/*.pdf
